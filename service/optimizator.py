@@ -4,7 +4,12 @@ import os
 
 class Optimizator:
     def __init__(self):
-        load_dotenv()
+        try:
+            if not load_dotenv('/config/.env'):
+                raise FileNotFoundError()
+        except FileNotFoundError as e:
+            # 기본 경로에서 다시 시도
+            load_dotenv()
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     def optimize_code(self, code_snippet):
